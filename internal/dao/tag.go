@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"github.com/go-programming-tour-book/blog-service/internal/model"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/internal/model"
+	"github.com/newpurr/easy-go/pkg/domain"
 )
 
 func (d *Dao) GetTag(id uint32, state uint8) (model.Tag, error) {
@@ -12,7 +12,7 @@ func (d *Dao) GetTag(id uint32, state uint8) (model.Tag, error) {
 
 func (d *Dao) GetTagList(name string, state uint8, page, pageSize int) ([]*model.Tag, error) {
 	tag := model.Tag{Name: name, State: state}
-	pageOffset := app.GetPageOffset(page, pageSize)
+	pageOffset := domain.GetPageOffset(page, pageSize)
 	return tag.List(d.engine, pageOffset, pageSize)
 }
 

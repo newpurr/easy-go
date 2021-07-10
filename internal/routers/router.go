@@ -1,18 +1,17 @@
 package routers
 
 import (
+	"github.com/newpurr/easy-go/application"
 	"net/http"
 	"time"
 
-	"github.com/go-programming-tour-book/blog-service/pkg/limiter"
-
-	"github.com/go-programming-tour-book/blog-service/global"
+	"github.com/newpurr/easy-go/pkg/limiter"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-programming-tour-book/blog-service/docs"
-	"github.com/go-programming-tour-book/blog-service/internal/middleware"
-	"github.com/go-programming-tour-book/blog-service/internal/routers/api"
-	"github.com/go-programming-tour-book/blog-service/internal/routers/api/v1"
+	_ "github.com/newpurr/easy-go/docs"
+	"github.com/newpurr/easy-go/internal/middleware"
+	"github.com/newpurr/easy-go/internal/routers/api"
+	"github.com/newpurr/easy-go/internal/routers/api/v1"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
@@ -28,17 +27,18 @@ var methodLimiters = limiter.NewMethodLimiter().AddBuckets(
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	if global.ServerSetting.RunMode == "debug" {
+	if application.ServerSetting.RunMode == "debug" {
 		r.Use(gin.Logger())
 		r.Use(gin.Recovery())
 	} else {
-		r.Use(middleware.AccessLog())
 		r.Use(middleware.Recovery())
+		r.Use(middleware.AccessLog())
 	}
 
+	r.Use(middleware.EpetAccessLog())
 	r.Use(middleware.Tracing())
 	r.Use(middleware.RateLimiter(methodLimiters))
-	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout))
+	r.Use(middleware.ContextTimeout(application.AppSetting.DefaultContextTimeout))
 	r.Use(middleware.Translations())
 
 	article := v1.NewArticle()
@@ -48,7 +48,7 @@ func NewRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/upload/file", upload.UploadFile)
 	r.POST("/auth", api.GetAuth)
-	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
+	r.StaticFS("/static", http.Dir(application.AppSetting.UploadSavePath))
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use() //middleware.JWT()
 	{

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/pkg/domain"
 	"github.com/jinzhu/gorm"
 )
 
@@ -17,7 +17,7 @@ func (t Tag) TableName() string {
 
 type TagSwagger struct {
 	List  []*Tag
-	Pager *app.Pager
+	Pager *domain.Pager
 }
 
 func (t Tag) Count(db *gorm.DB) (int, error) {

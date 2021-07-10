@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"bytes"
+	"github.com/newpurr/easy-go/application"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-programming-tour-book/blog-service/global"
-	"github.com/go-programming-tour-book/blog-service/pkg/logger"
+		"github.com/newpurr/easy-go/pkg/logger"
 )
 
 type AccessLogWriter struct {
@@ -36,7 +36,7 @@ func AccessLog() gin.HandlerFunc {
 		}
 		s := "access log: method: %s, status_code: %d, " +
 			"begin_time: %d, end_time: %d"
-		global.Logger.WithFields(fields).Infof(c, s,
+		application.Logger.WithFields(fields).Infof(c, s,
 			c.Request.Method,
 			bodyWriter.Status(),
 			beginTime,

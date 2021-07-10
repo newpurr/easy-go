@@ -1,9 +1,9 @@
-package app
+package domain
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-programming-tour-book/blog-service/global"
-	"github.com/go-programming-tour-book/blog-service/pkg/convert"
+	"github.com/newpurr/easy-go/application"
+	"github.com/newpurr/easy-go/pkg/convert"
 )
 
 func GetPage(c *gin.Context) int {
@@ -18,10 +18,10 @@ func GetPage(c *gin.Context) int {
 func GetPageSize(c *gin.Context) int {
 	pageSize := convert.StrTo(c.Query("page_size")).MustInt()
 	if pageSize <= 0 {
-		return global.AppSetting.DefaultPageSize
+		return application.AppSetting.DefaultPageSize
 	}
-	if pageSize > global.AppSetting.MaxPageSize {
-		return global.AppSetting.MaxPageSize
+	if pageSize > application.AppSetting.MaxPageSize {
+		return application.AppSetting.MaxPageSize
 	}
 
 	return pageSize

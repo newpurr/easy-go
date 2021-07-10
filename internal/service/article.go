@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/go-programming-tour-book/blog-service/internal/dao"
-	"github.com/go-programming-tour-book/blog-service/internal/model"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/internal/dao"
+	"github.com/newpurr/easy-go/internal/model"
+	"github.com/newpurr/easy-go/pkg/domain"
 )
 
 type ArticleRequest struct {
@@ -78,7 +78,7 @@ func (svc *Service) GetArticle(param *ArticleRequest) (*Article, error) {
 	}, nil
 }
 
-func (svc *Service) GetArticleList(param *ArticleListRequest, pager *app.Pager) ([]*Article, int, error) {
+func (svc *Service) GetArticleList(param *ArticleListRequest, pager *domain.Pager) ([]*Article, int, error) {
 	articleCount, err := svc.dao.CountArticleListByTagID(param.TagID, param.State)
 	if err != nil {
 		return nil, 0, err

@@ -49,7 +49,7 @@ blog-service 博客后端
 
 ## 后话
 
-- 如果本项目对你有所帮助欢迎进行 star，另外有任何的建议或意见欢迎随时提交 [issues](https://github.com/go-programming-tour-book/blog-service/issues/new) 或 [pr](https://github.com/go-programming-tour-book/blog-service/pulls)。
+- 如果本项目对你有所帮助欢迎进行 star，另外有任何的建议或意见欢迎随时提交 [issues](https://github.com/newpurr/easy-go/blog-service/issues/new) 或 [pr](https://github.com/newpurr/easy-go/blog-service/pulls)。
 
 - 如果你不是本书的读者，我正式向你推荐 《Go 语言编程之旅：一起用 Go 做项目》这本书，本书针对常见的项目类型，主要细分为 5 + 1 板块，分别是命令行、HTTP、RPC、Websocket 应用、进程内缓存以及 Go 语言中的大杀器，希望你能够喜欢。
 

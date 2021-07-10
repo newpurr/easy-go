@@ -3,10 +3,10 @@ package middleware
 import "C"
 import (
 	"context"
+	"github.com/newpurr/easy-go/application"
 
 	"github.com/opentracing/opentracing-go/ext"
 
-	"github.com/go-programming-tour-book/blog-service/global"
 	"github.com/uber/jaeger-client-go"
 
 	"github.com/gin-gonic/gin"
@@ -19,11 +19,11 @@ func Tracing() func(c *gin.Context) {
 		var span opentracing.Span
 		spanCtx, err := opentracing.GlobalTracer().Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(c.Request.Header))
 		if err != nil {
-			span, newCtx = opentracing.StartSpanFromContextWithTracer(c.Request.Context(), global.Tracer, c.Request.URL.Path)
+			span, newCtx = opentracing.StartSpanFromContextWithTracer(c.Request.Context(), application.Tracer, c.Request.URL.Path)
 		} else {
 			span, newCtx = opentracing.StartSpanFromContextWithTracer(
 				c.Request.Context(),
-				global.Tracer,
+				application.Tracer,
 				c.Request.URL.Path,
 				opentracing.ChildOf(spanCtx),
 				opentracing.Tag{Key: string(ext.Component), Value: "HTTP"},

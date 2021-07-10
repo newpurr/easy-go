@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
+	"github.com/newpurr/easy-go/application"
 
 	otgorm "github.com/eddycjy/opentracing-gorm"
 
-	"github.com/go-programming-tour-book/blog-service/global"
-	"github.com/go-programming-tour-book/blog-service/internal/dao"
+	"github.com/newpurr/easy-go/internal/dao"
 )
 
 type Service struct {
@@ -16,6 +16,6 @@ type Service struct {
 
 func New(ctx context.Context) Service {
 	svc := Service{ctx: ctx}
-	svc.dao = dao.New(otgorm.WithContext(svc.ctx, global.DBEngine))
+	svc.dao = dao.New(otgorm.WithContext(svc.ctx, application.DBEngine))
 	return svc
 }

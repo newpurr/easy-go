@@ -4,8 +4,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
-	"github.com/go-programming-tour-book/blog-service/pkg/errcode"
+	"github.com/newpurr/easy-go/pkg/domain"
+	"github.com/newpurr/easy-go/pkg/errcode"
 )
 
 func JWT() gin.HandlerFunc {
@@ -22,7 +22,7 @@ func JWT() gin.HandlerFunc {
 		if token == "" {
 			ecode = errcode.InvalidParams
 		} else {
-			_, err := app.ParseToken(token)
+			_, err := domain.ParseToken(token)
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
@@ -34,7 +34,7 @@ func JWT() gin.HandlerFunc {
 		}
 
 		if ecode != errcode.Success {
-			response := app.NewResponse(c)
+			response := domain.NewResponse(c)
 			response.ToErrorResponse(ecode)
 			c.Abort()
 			return

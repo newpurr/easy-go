@@ -1,13 +1,13 @@
-package app
+package domain
 
 import (
+	"github.com/newpurr/easy-go/application"
 	"time"
 
-	"github.com/go-programming-tour-book/blog-service/pkg/util"
+	"github.com/newpurr/easy-go/pkg/util"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/go-programming-tour-book/blog-service/global"
-)
+	)
 
 type Claims struct {
 	AppKey    string `json:"app_key"`
@@ -16,18 +16,18 @@ type Claims struct {
 }
 
 func GetJWTSecret() []byte {
-	return []byte(global.JWTSetting.Secret)
+	return []byte(application.JWTSetting.Secret)
 }
 
 func GenerateToken(appKey, appSecret string) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(global.JWTSetting.Expire)
+	expireTime := nowTime.Add(application.JWTSetting.Expire)
 	claims := Claims{
 		AppKey:    util.EncodeMD5(appKey),
 		AppSecret: util.EncodeMD5(appSecret),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    global.JWTSetting.Issuer,
+			Issuer:    application.JWTSetting.Issuer,
 		},
 	}
 

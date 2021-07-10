@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/pkg/domain"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,7 +16,7 @@ type Article struct {
 
 type ArticleSwagger struct {
 	List  []*Article
-	Pager *app.Pager
+	Pager *domain.Pager
 }
 
 func (a Article) TableName() string {

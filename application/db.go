@@ -1,4 +1,4 @@
-package global
+package application
 
 import "github.com/jinzhu/gorm"
 

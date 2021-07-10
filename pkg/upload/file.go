@@ -1,6 +1,7 @@
 package upload
 
 import (
+	"github.com/newpurr/easy-go/application"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -8,8 +9,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/go-programming-tour-book/blog-service/global"
-	"github.com/go-programming-tour-book/blog-service/pkg/util"
+	"github.com/newpurr/easy-go/pkg/util"
 )
 
 type FileType int
@@ -29,11 +29,11 @@ func GetFileExt(name string) string {
 }
 
 func GetSavePath() string {
-	return global.AppSetting.UploadSavePath
+	return application.AppSetting.UploadSavePath
 }
 
 func GetServerUrl() string {
-	return global.AppSetting.UploadServerUrl
+	return application.AppSetting.UploadServerUrl
 }
 
 func CheckSavePath(dst string) bool {
@@ -47,7 +47,7 @@ func CheckContainExt(t FileType, name string) bool {
 	ext = strings.ToUpper(ext)
 	switch t {
 	case TypeImage:
-		for _, allowExt := range global.AppSetting.UploadImageAllowExts {
+		for _, allowExt := range application.AppSetting.UploadImageAllowExts {
 			if strings.ToUpper(allowExt) == ext {
 				return true
 			}
@@ -63,7 +63,7 @@ func CheckMaxSize(t FileType, f multipart.File) bool {
 	size := len(content)
 	switch t {
 	case TypeImage:
-		if size >= global.AppSetting.UploadImageMaxSize*1024*1024 {
+		if size >= application.AppSetting.UploadImageMaxSize*1024*1024 {
 			return true
 		}
 	}

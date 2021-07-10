@@ -2,12 +2,11 @@ package service
 
 import (
 	"errors"
+	"github.com/newpurr/easy-go/application"
 	"mime/multipart"
 	"os"
 
-	"github.com/go-programming-tour-book/blog-service/global"
-
-	"github.com/go-programming-tour-book/blog-service/pkg/upload"
+	"github.com/newpurr/easy-go/pkg/upload"
 )
 
 type FileInfo struct {
@@ -39,6 +38,6 @@ func (svc *Service) UploadFile(fileType upload.FileType, file multipart.File, fi
 		return nil, err
 	}
 
-	accessUrl := global.AppSetting.UploadServerUrl + "/" + fileName
+	accessUrl := application.AppSetting.UploadServerUrl + "/" + fileName
 	return &FileInfo{Name: fileName, AccessUrl: accessUrl}, nil
 }

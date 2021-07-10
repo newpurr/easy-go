@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/go-programming-tour-book/blog-service/internal/model"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/internal/model"
+	"github.com/newpurr/easy-go/pkg/domain"
 )
 
 type CountTagRequest struct {
@@ -36,7 +36,7 @@ func (svc *Service) CountTag(param *CountTagRequest) (int, error) {
 	return svc.dao.CountTag(param.Name, param.State)
 }
 
-func (svc *Service) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
+func (svc *Service) GetTagList(param *TagListRequest, pager *domain.Pager) ([]*model.Tag, error) {
 	return svc.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
 }
 

@@ -1,55 +1,69 @@
 package app
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-	"github.com/go-programming-tour-book/blog-service/pkg/errcode"
+	"context"
+	"github.com/newpurr/easy-go/pkg/signalc"
+	"golang.org/x/sync/errgroup"
+	"log"
+	"sync"
+	"syscall"
 )
 
-type Response struct {
-	Ctx *gin.Context
+type App struct {
+	eg         errgroup.Group
+	l          sync.Mutex
+	p          []Processer
+	stopSignal chan struct{}
 }
 
-type Pager struct {
-	// 页码
-	Page int `json:"page"`
-	// 每页数量
-	PageSize int `json:"page_size"`
-	// 总行数
-	TotalRows int `json:"total_rows"`
-}
-
-func NewResponse(ctx *gin.Context) *Response {
-	return &Response{
-		Ctx: ctx,
+func NewApp() *App {
+	return &App{
+		eg:         errgroup.Group{},
+		l:          sync.Mutex{},
+		p:          []Processer{},
+		stopSignal: make(chan struct{}),
 	}
 }
 
-func (r *Response) ToResponse(data interface{}) {
-	if data == nil {
-		data = gin.H{}
-	}
-	r.Ctx.JSON(http.StatusOK, data)
-}
-
-func (r *Response) ToResponseList(list interface{}, totalRows int) {
-	r.Ctx.JSON(http.StatusOK, gin.H{
-		"list": list,
-		"pager": Pager{
-			Page:      GetPage(r.Ctx),
-			PageSize:  GetPageSize(r.Ctx),
-			TotalRows: totalRows,
-		},
-	})
-}
-
-func (r *Response) ToErrorResponse(err *errcode.Error) {
-	response := gin.H{"code": err.Code(), "msg": err.Msg()}
-	details := err.Details()
-	if len(details) > 0 {
-		response["details"] = details
+func (a *App) WithProcesser(p ...Processer) *App {
+	a.l.Lock()
+	defer a.l.Unlock()
+	for _, processer := range p {
+		a.p = append(a.p, processer)
 	}
 
-	r.Ctx.JSON(err.StatusCode(), response)
+	return a
+}
+
+func (a *App) Start(ctx context.Context) {
+	a.l.Lock()
+	defer a.l.Unlock()
+
+	go func() {
+		select {
+		case <-signalc.Wait(syscall.SIGINT, syscall.SIGTERM):
+			close(a.stopSignal)
+		case <-ctx.Done():
+			close(a.stopSignal)
+		}
+	}()
+	for _, processer := range a.p {
+		p := processer
+		a.eg.Go(func() error {
+			go p.MustStart()
+			<-a.stopSignal
+			p.Stop()
+			return nil
+		})
+	}
+
+	_ = a.eg.Wait()
+
+	log.Println("server has exited.")
+}
+
+func FastStart(p ...Processer) {
+	starter := NewApp()
+	starter.WithProcesser(p...)
+	starter.Start(context.Background())
 }

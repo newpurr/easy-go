@@ -2,11 +2,11 @@ package model
 
 import (
 	"fmt"
+	"github.com/newpurr/easy-go/application"
 	"time"
 
 	otgorm "github.com/eddycjy/opentracing-gorm"
-	"github.com/go-programming-tour-book/blog-service/global"
-	"github.com/go-programming-tour-book/blog-service/pkg/setting"
+		"github.com/newpurr/easy-go/pkg/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -26,7 +26,7 @@ type Model struct {
 	IsDel      uint8  `json:"is_del"`
 }
 
-func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
+func NewDBEngine(databaseSetting *setting.DatabaseSetting) (*gorm.DB, error) {
 	db, err := gorm.Open(databaseSetting.DBType, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
 		databaseSetting.UserName,
 		databaseSetting.Password,
@@ -39,7 +39,7 @@ func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	if global.ServerSetting.RunMode == "debug" {
+	if application.ServerSetting.RunMode == "debug" {
 		db.LogMode(true)
 	}
 	db.SingularTable(true)

@@ -1,6 +1,6 @@
 package dao
 
-import "github.com/go-programming-tour-book/blog-service/internal/model"
+import "github.com/newpurr/easy-go/internal/model"
 
 func (d *Dao) GetArticleTagByAID(articleID uint32) (model.ArticleTag, error) {
 	articleTag := model.ArticleTag{ArticleID: articleID}

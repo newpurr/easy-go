@@ -1,14 +1,14 @@
 Server:
   RunMode: debug
-  HttpPort: 8000
+  HttpPort: 8888
   ReadTimeout: 60
   WriteTimeout: 60
 App:
   DefaultPageSize: 10
   MaxPageSize: 100
   DefaultContextTimeout: 60
-  LogSavePath: storage/logs
-  LogFileName: app
+  LogSavePath: .
+  LogFileName: domain
   LogFileExt: .log
   UploadSavePath: storage/uploads
   UploadServerUrl: http://127.0.0.1:8000/static
@@ -33,8 +33,8 @@ JWT:
 Database:
   DBType: mysql
   UserName: root
-  Password: rootroot
-  Host: 127.0.0.1:3306
+  Password: 123456
+  Host: 192.168.123.160:13306
   DBName: blog_service
   TablePrefix: blog_
   Charset: utf8

@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
-	"github.com/go-programming-tour-book/blog-service/pkg/errcode"
-	"github.com/go-programming-tour-book/blog-service/pkg/limiter"
+	"github.com/newpurr/easy-go/pkg/domain"
+	"github.com/newpurr/easy-go/pkg/errcode"
+	"github.com/newpurr/easy-go/pkg/limiter"
 )
 
 func RateLimiter(l limiter.LimiterIface) gin.HandlerFunc {
@@ -13,7 +13,7 @@ func RateLimiter(l limiter.LimiterIface) gin.HandlerFunc {
 		if bucket, ok := l.GetBucket(key); ok {
 			count := bucket.TakeAvailable(1)
 			if count == 0 {
-				response := app.NewResponse(c)
+				response := domain.NewResponse(c)
 				response.ToErrorResponse(errcode.TooManyRequests)
 				c.Abort()
 				return

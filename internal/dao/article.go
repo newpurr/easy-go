@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"github.com/go-programming-tour-book/blog-service/internal/model"
-	"github.com/go-programming-tour-book/blog-service/pkg/app"
+	"github.com/newpurr/easy-go/internal/model"
+	"github.com/newpurr/easy-go/pkg/domain"
 )
 
 type Article struct {
@@ -68,5 +68,5 @@ func (d *Dao) CountArticleListByTagID(id uint32, state uint8) (int, error) {
 
 func (d *Dao) GetArticleListByTagID(id uint32, state uint8, page, pageSize int) ([]*model.ArticleRow, error) {
 	article := model.Article{State: state}
-	return article.ListByTagID(d.engine, id, app.GetPageOffset(page, pageSize), pageSize)
+	return article.ListByTagID(d.engine, id, domain.GetPageOffset(page, pageSize), pageSize)
 }

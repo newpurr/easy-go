@@ -1,6 +1,6 @@
 package dao
 
-import "github.com/go-programming-tour-book/blog-service/internal/model"
+import "github.com/newpurr/easy-go/internal/model"
 
 func (d *Dao) GetAuth(appKey, appSecret string) (model.Auth, error) {
 	auth := model.Auth{AppKey: appKey, AppSecret: appSecret}
