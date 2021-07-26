@@ -1,7 +1,7 @@
 package application
 
 import (
-	"github.com/newpurr/easy-go/pkg/logger"
+	"github.com/newpurr/easy-go/logger"
 )
 
 var (
